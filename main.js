@@ -1,24 +1,32 @@
-const coinFlipper = function () {
-  let runningTotal = 0;
-  
-  const coinWeight = { "head": 50,"tail": 50 };
-  let keyContainer = new Array;
-  let weightKeys = Object.keys(coinWeight);
+class CoinFlipper {
 
-  weightKeys.forEach(key => {
-    for(let i = 0; i < coinWeight[key]; i++) {
-      keyContainer.push(key);
-    }
-  });
+  constructor(wallet, bettingPrice = 0, opponentNumber = 0) {
+    this.wallet = wallet;
+    this.bettingPrice = bettingPrice;
+    this.opponentNumber = opponentNumber;
+    this.coinWeight = { "head": 50, "tail": 50 };
+  };
 
-  return keyContainer;
+  keysGenerator() {
+    let keysContainer = [];
+    let keys = Object.keys(this.coinWeight);
+
+    keys.forEach(key => {
+      for(let i = 0; i < this.coinWeight[key]; i++) {
+        keysContainer.push(key);
+      }
+    });
+    return keysContainer
+  } 
+
+
+  randomizer() {
+    return this.keysGenerator()[Math.floor((Math.random()*this.keysGenerator().length))]
+  }
+
+
 }
 
 
-Array.prototype.random = function () {
-  return this[Math.floor((Math.random()*this.length))];
-}
-
-
-coinFlipper().random();
-
+const myTest = new CoinFlipper(300)
+console.log(myTest.randomizer());
