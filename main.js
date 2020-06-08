@@ -1,6 +1,6 @@
 class CoinFlipper {
 
-  constructor(wallet, bettingPrice = 0, opponentNumber = 0) {
+  constructor(wallet = 0, bettingPrice = 0, opponentNumber = 0) {
     this.wallet = wallet;
     this.bettingPrice = bettingPrice;
     this.opponentNumber = opponentNumber;
@@ -24,9 +24,15 @@ class CoinFlipper {
     return this.keysGenerator()[Math.floor((Math.random()*this.keysGenerator().length))]
   }
 
+  addToWallet() {
+    this.wallet = 0;
+    this.wallet = prompt(`How much would you like to your wallet?\n`);
+    return this.wallet;
+  }
+
 
 }
 
 
-const myTest = new CoinFlipper(300)
-console.log(myTest.randomizer());
+const myTest = new CoinFlipper()
+console.log(myTest.addToWallet());
