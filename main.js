@@ -38,41 +38,51 @@ class Game {
 
   addToWallet() {
     this.wallet = 0;
-    this.wallet = prompt(`How much would you like to your wallet?\n`);
-    return this.wallet;
+    this.wallet = prompt(`But first, how much would you like to your wallet? `);
+    return Math.abs(this.wallet);
   }
   
 
 }
 
 
-// const myTest = new Game();
-// console.log(myTest.cpu());
-
 class CoinFlipper extends Game {
 
   gameFlow() {
       
-    console.log("EACH GAME COSTS $50. THE WINNER TAKES ALL. YOU WILL BE PLAYING ONE OPPONENT PER ROUND WITHIN EACH GAME. EACH PLAYER WILL MAKE A GUESS, IF YOU'RE CORRECT, YOU CAN DECIDE TO KEEP PLAYING OR CASH OUT. TO WIN, YOUR GUESSES HAVE TO BE CORRECT MORE TIMES THAN YOUR OPPONENT. \n")
+    console.log(`THINGS TO NOTE BEFORE YOU START TO FLIP\n- YOU HAVE TO START WITH AT LEAST $500 IN YOUR WALLET\n- YOU CANNOT PLAY MORE THAN 10 OPPONENTS PER GAME.\n- REMEMBER TO HAVE FUN.\n`)
     const [name, opponents] = this.basicInfo();
-    console.log(`\nWELCOME TO THE GAME OF CHANCE AND PROBABILITY. MAY THE ODDS BE WITH YOU ${name.toUpperCase()}. LET'S FFFLLLIIIPPP!!!`);
+    if (opponents > 10) return `You cannot play more than 10 players at a time.`
+    console.log(`\nWELCOME TO THE GAME OF CHANCE AND PROBABILITY. MAY THE ODDS BE WITH YOU ${name.toUpperCase()}. LET'S FFFLLLIIIPPP!!!\n`);
     
     let count = 0
     let userWinnings = 0;
     let cpuWinnings = 0;
+    
+    let playerWallet = this.addToWallet();
+    if (playerWallet < 500) {
+      return'Comeback when you have more money to spare';
+    } else {
+      console.log(`\nYou now have $${playerWallet}. This cannot be changed through the course of the game. you can increase your money by winning each round. You lose $50 for all each opponent you lose to and you win $50 for every opponent defeated.`);
+    }
 
     while (count < Number(opponents)) {
       let cpuGuess = this.cpu()
-      let userGuess = prompt(`head or tail: `).toLowerCase()
+      let userGuess = prompt(`\nhead or tail: `).toLowerCase()
       let answer = this.randomArrayItem(this.keysGenerator());
       console.log(`cpu: ${cpuGuess} \nuser: ${userGuess} \nanswer: ${answer}\n`)
       // if (userGuess !== 'head' || userGuess !== 'tail') return 'Not an option.';
-      if (userGuess === answer) { userWinnings += 1 }
+      if (userGuess === answer) {
+        userWinnings += 1;
+      }
       if (cpuGuess === answer) { cpuWinnings +=1 }
       count++
     }
+    let totalDifference = userWinnings - cpuWinnings;
+    this.wallet = Number(this.wallet);
+    this.wallet += 50 * (totalDifference)
 
-    if (userWinnings > cpuWinnings)  console.log(`${name}!!! you won.`);
+    if (userWinnings > cpuWinnings)  console.log(`${name}!!! you won ${userWinnings} rounds. You have $${this.wallet} left in your wallet.`);
     if (cpuWinnings > userWinnings)  console.log(`cpu won meep morp`);
     if (cpuWinnings === userWinnings)  console.log(`'tis a tie`);
 
